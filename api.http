@@ -1,0 +1,39 @@
+
+
+
+GET http://localhost:4000/Productos
+
+###Obtener Producto Disponible
+
+GET http://localhost:4000/Productos/Disponible/
+
+###Obtener producto por ID
+
+GET http://localhost:4000/Productos/2
+
+###Crear producto
+
+POST http://localhost:4000/productos
+Content-Type: application/json
+
+{
+  "nombre": "Teclado Gamer",
+  "precio": 79.99,
+  "categoria": "Accesorios",
+  "descripcion": "Teclado mecánico RGB retroiluminado",
+  "disponible": true
+}
+
+####Actualizar Productos
+
+PUT http://localhost:4000/productos/1
+Content-Type: application/json
+
+{
+  "nombre": "Producto Actualizado",
+  "precio": 200,
+  "descripcion":"Este telvisor esta en oferta"
+}
+###Eliminar producto por ID
+
+DELETE http://localhost:4000/productos/2
