@@ -1,4 +1,4 @@
-# APIObedTareaDise
+# Tarea 2.1 continuacion Diseño Digital
 Repositorio de la tarea API 
 Archivo para crear un proyecto para una api en Node JS:
 	
