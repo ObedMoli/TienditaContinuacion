@@ -15,5 +15,5 @@ router.post('/', crearCategoria);
 router.put('/:id', editarCategoria);
 router.delete('/:id', eliminarCategoria);
 
-// 🔴 Esta línea es CRUCIAL
+//Exportacion del router
 export default router;
