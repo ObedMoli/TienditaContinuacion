@@ -3,14 +3,17 @@
   "version": "1.0.0",
   "description": "Api de tarea",
   "main": "index.js",
-  "type":"module",
+  "type": "module",
   "scripts": {
-    "dev":"node --watch index.js",
+    "dev": "node --watch index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "ObedMolina",
   "license": "MIT",
   "dependencies": {
-    "express": "^5.1.0"
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "mysql2": "^3.14.2",
+    "zod": "^4.0.5"
   }
 }

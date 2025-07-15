@@ -1,7 +1,8 @@
 import mysql from 'mysql2'
 import 'dotenv/config'
 
-const connection = mysql.createConnection(
+
+const pool = mysql.createPool(
     {
         host:process.env.DB_HOST,
         port:process.env.DB_PORT,
@@ -10,14 +11,6 @@ const connection = mysql.createConnection(
         database: process.env.DB_NAME
     }
 )
-connection.connect((error)=>
-    {
-        if(error)
-            {
-                throw new Error(error.message)
-            }
 
-
-    }
-)
-export default connection
+const db = pool.promise();
+export default db;

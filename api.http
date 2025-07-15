@@ -1,39 +1,62 @@
 
 
+### Obtener todas las categorías
+GET http://localhost:4000/categorias
 
-GET http://localhost:4000/Productos
+### Obtener una categoría por ID
+GET http://localhost:4000/categorias/1
 
-###Obtener Producto Disponible
+### Crear nueva categoría
+POST http://localhost:4000/categorias
+Content-Type: application/json
 
-GET http://localhost:4000/Productos/Disponible/
+{
+  "nombre": "Electrónica"
+}
 
-###Obtener producto por ID
+### Editar categoría existente
+PUT http://localhost:4000/categorias/1
+Content-Type: application/json
 
-GET http://localhost:4000/Productos/2
+{
+  "nombre": "Electrónica de Consumo"
+}
 
-###Crear producto
+### Eliminar una categoría
+DELETE http://localhost:4000/categorias/1
 
+### Obtener todos los productos
+GET http://localhost:4000/productos
+
+### Obtener productos disponibles
+GET http://localhost:4000/productos/disponible
+
+### Obtener producto por ID
+GET http://localhost:4000/productos/1
+
+### Crear nuevo producto
 POST http://localhost:4000/productos
 Content-Type: application/json
 
 {
-  "nombre": "Teclado Gamer",
-  "precio": 79.99,
-  "categoria": "Accesorios",
-  "descripcion": "Teclado mecánico RGB retroiluminado",
-  "disponible": true
+  "nombre": "Tablet Samsung",
+  "precio": 399.99,
+  "descripcion": "Tablet con pantalla AMOLED de 10 pulgadas",
+  "disponible": true,
+  "categoriaId": 1
 }
 
-####Actualizar Productos
-
+### Actualizar producto existente
 PUT http://localhost:4000/productos/1
 Content-Type: application/json
 
 {
-  "nombre": "Producto Actualizado",
-  "precio": 200,
-  "descripcion":"Este telvisor esta en oferta"
+  "nombre": "Tablet Samsung Galaxy",
+  "precio": 449.99,
+  "descripcion": "Versión actualizada con 128GB de almacenamiento",
+  "disponible": true,
+  "categoriaId": 1
 }
-###Eliminar producto por ID
 
-DELETE http://localhost:4000/productos/2
+### Eliminar producto
+DELETE http://localhost:4000/productos/1
