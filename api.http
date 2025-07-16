@@ -7,11 +7,11 @@ GET http://localhost:5000/categorias
 GET http://localhost:5000/categorias/1
 
 ### Crear nueva categoría
-POST http://localhost:5000/categorias/crear
+POST http://localhost:5000/categorias
 Content-Type: application/json
 
 {
-  "nombre": "Hola"
+  "nombre": "Hogar"
 }
 
 ### Editar categoría existente
