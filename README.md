@@ -29,7 +29,8 @@ Archivo para crear un proyecto para una api en Node JS:
 
 	Ruta: /productos/:id
 		Descripción: Modifica los datos de un producto existente, asi como en la agregacion de productos estan los campos con el contenido que se va cambiar a los productos
-CATEGORIAS	
+
+	CATEGORIAS	
 	Ruta: /categorias
 		Método: GET
 		Descripción: Devuelve una lista de todas las categorías registradas en la base de datos.
