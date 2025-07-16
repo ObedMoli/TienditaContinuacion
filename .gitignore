@@ -1,3 +1,4 @@
 node_modules/
 .env
 .vscode
+Db_JsonTienda/
