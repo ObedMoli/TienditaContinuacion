@@ -13,6 +13,7 @@ Archivo para crear un proyecto para una api en Node JS:
 	npm install node
 	npm install dotenv
 	npm install mysql2
+	Y tener instalado y corriendo el docker con el servidor de base de datos
 	cambiar la extension del archivo env.structure a .env y completar con los datos correspondiente
 
 	Ruta: /productos
