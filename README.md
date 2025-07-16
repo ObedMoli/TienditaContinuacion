@@ -6,13 +6,17 @@ Archivo para crear un proyecto para una api en Node JS:
 	
 	En la misma terminal instalar node js Express con: npm install express 
 	
-	En el archivo Index hay que agregar una variable PORT constante para asignar en que puerto va correr el servidor de forma que mi puerto 3000 estaba ocupado utilice el 4000
-	
-	En el archivo package.json se debe agregar en la parte de scrips lo siguiente ("dev":"node --watch 
-	index.js",) para al momento querer iniciar el servidor solo sea neceario escribir en la terminal (npm run dev) que ira a buscar lo que esta alojado en dev y iniciara el servido en el navegador
-	
+	En el archivo Index hay que agregar una variable PORT constante para asignar en que puerto va correr el servidor de forma que mi puerto 3000 estaba ocupado utilice el 5000
+	Se han agregado varias dependencias y se necesitan instalar para que funcione estan son las siguientes:
+
+	npm install zod
+	npm install node
+	npm install dotenv
+	npm install mysql2
+	cambiar la extension del archivo env.structure a .env y completar con los datos correspondiente
+
 	Ruta: /productos
-		Descripción: Obtiene un listado completo de todos los productos registrados en el json.
+		Descripción: Obtiene un listado completo de todos los productos registrados en la base de datos.
 
 	Ruta: /productos/disponibles
 		Descripción: Muestra solo los productos marcados como disponibles (disponible=true).
@@ -21,7 +25,38 @@ Archivo para crear un proyecto para una api en Node JS:
 		Descripción: Busca un producto específico usando su ID numérico.
 
 	Ruta: /productos
-		Descripción: Agrega un nuevo producto al sistema, para este caso hay un pequeño json en el archivo appi.http en el cual se definen los campos y el producto que va agregarse
+		Descripción: Agrega un nuevo producto a la  base de datos
 
 	Ruta: /productos/:id
 		Descripción: Modifica los datos de un producto existente, asi como en la agregacion de productos estan los campos con el contenido que se va cambiar a los productos
+CATEGORIAS	
+	Ruta: /categorias
+		Método: GET
+		Descripción: Devuelve una lista de todas las categorías registradas en la base de datos.
+
+	Ruta: /categorias/:id
+		Método: GET
+		Descripción: Devuelve la información de una categoría específica por su ID.
+
+	Ruta: /categorias/crear
+		Método: POST
+		Descripción: Crea una nueva categoría.
+		Campos esperados en el cuerpo de la solicitud (Content-Type: application/json):
+		json
+		Copiar
+		Editar
+		{
+		"nombre": "Electrónica"
+		}
+		nombre: (string) requerido y debe ser único. No se permiten campos vacíos.
+
+	Ruta: /categorias/:id
+	Método: PUT
+		Descripción: Modifica los datos de una categoría existente.
+		Campos que pueden enviarse en el cuerpo de la solicitud:
+		nombre: (string) nuevo nombre para la categoría. Requerido. No debe repetirse con otro nombre ya existente.
+
+	Ruta: /categorias/:id
+		Método: DELETE
+		Descripción: Elimina una categoría específica.
+		Condición especial: No se permite eliminar la categoría si tiene productos asignados.

@@ -4,7 +4,7 @@ import ProductosRouter from './Routes/productos.routes.mysql.js'
 
 //Codigo para verificacion del puerto servidor y usar express
 const app=express()
-const PORT=process.env.PORT || 4000
+const PORT=process.env.PORT || 5000
 
 
 //Probar en que puerto esta escuchando el servidor

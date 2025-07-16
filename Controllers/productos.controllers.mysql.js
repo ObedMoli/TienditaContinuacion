@@ -7,6 +7,9 @@ import {
   deleteProducto
 } from '../models/productos.js';
 
+import { productoSchema } from '../schema/producto.schema.js';
+import { z } from 'zod';
+
 export default class ProductosControllers {
 
   static getAll = async (req, res) => {
@@ -41,39 +44,52 @@ export default class ProductosControllers {
     }
   };
 
-  static CrearProducto = async (req, res) => {
-    try {
-      const { nombre, precio, descripcion, disponible, categoriaId } = req.body;
-      if (!nombre || !descripcion || precio === undefined || disponible === undefined || !categoriaId) {
-        return res.status(400).json({ status: 'Fallido', message: 'Campos requeridos faltantes' });
-      }
+static CrearProducto = async (req, res) => {
+  try {
+    const datos = productoSchema.parse(req.body); // Zod validación
 
-      const insertId = await createProducto({ nombre, precio, descripcion, disponible, categoriaId });
-      const nuevoProducto = await getProductoById(insertId);
+    const insertId = await createProducto(datos);
+    const nuevoProducto = await getProductoById(insertId);
 
-      res.status(201).json({ status: 'Conexión Exitosa', data: nuevoProducto });
-    } catch (error) {
-      res.status(500).json({ status: 'Error', message: 'Error al crear el producto', error: error.message });
+    res.status(201).json({ status: 'Conexión Exitosa', data: nuevoProducto });
+
+  } catch (error) {
+    // Zod Error: Mostrar detalles
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ status: 'Fallido', errores: error.message });
     }
-  };
 
-  static ActualizarProductos = async (req, res) => {
-    try {
-      const id = parseInt(req.params.id);
-      const { nombre, precio, descripcion, disponible, categoriaId } = req.body;
-      if (isNaN(id)) return res.status(400).json({ status: 'Fallido', message: 'ID inválido' });
+    // Error inesperado: también mostrar mensaje
+    res.status(500).json({
+      status: 'Error',
+      message: 'Error al crear el producto',
+      error: error.message,
+    });
+  }
+};
 
-      const existente = await getProductoById(id);
-      if (!existente) return res.status(404).json({ status: 'Fallido', message: 'Producto no encontrado' });
 
-      await updateProducto(id, { nombre, precio, descripcion, disponible, categoriaId });
-      const productoActualizado = await getProductoById(id);
 
-      res.status(200).json({ status: 'Actualizado correctamente', data: productoActualizado });
-    } catch (error) {
-      res.status(500).json({ status: 'Error', message: 'Error al actualizar el producto', error: error.message });
+static ActualizarProductos = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    if (isNaN(id)) return res.status(400).json({ status: 'Fallido', message: 'ID inválido' });
+
+    const existente = await getProductoById(id);
+    if (!existente) return res.status(404).json({ status: 'Fallido', message: 'Producto no encontrado' });
+
+    const datos = productoSchema.parse(req.body);
+    await updateProducto(id, datos);
+
+    const productoActualizado = await getProductoById(id);
+    res.status(200).json({ status: 'Actualizado correctamente', data: productoActualizado });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ status: 'Fallido', errores: error.errors });
     }
-  };
+    res.status(500).json({ status: 'Error', message: 'Error al actualizar el producto', error: error.message });
+  }
+};
 
   static EliminarProducto = async (req, res) => {
     try {

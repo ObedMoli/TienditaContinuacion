@@ -1,62 +1,65 @@
 
 
 ### Obtener todas las categorías
-GET http://localhost:4000/categorias
+GET http://localhost:5000/categorias
 
 ### Obtener una categoría por ID
-GET http://localhost:4000/categorias/1
+GET http://localhost:5000/categorias/1
 
 ### Crear nueva categoría
-POST http://localhost:4000/categorias
+POST http://localhost:5000/categorias/crear
 Content-Type: application/json
 
 {
-  "nombre": "Electrónica"
+  "nombre": "Hola"
 }
 
 ### Editar categoría existente
-PUT http://localhost:4000/categorias/1
+PUT http://localhost:5000/categorias/1
 Content-Type: application/json
 
 {
-  "nombre": "Electrónica de Consumo"
+  "nombre": "Electrónica "
 }
 
 ### Eliminar una categoría
-DELETE http://localhost:4000/categorias/1
+DELETE http://localhost:5000/categorias/10
 
 ### Obtener todos los productos
-GET http://localhost:4000/productos
+GET http://localhost:5000/productos
 
 ### Obtener productos disponibles
-GET http://localhost:4000/productos/disponible
+GET http://localhost:5000/productos/disponible
 
 ### Obtener producto por ID
-GET http://localhost:4000/productos/1
+GET http://localhost:5000/productos/1
 
 ### Crear nuevo producto
-POST http://localhost:4000/productos
+POST http://localhost:5000/productos
 Content-Type: application/json
 
+
 {
-  "nombre": "Tablet Samsung",
-  "precio": 399.99,
-  "descripcion": "Tablet con pantalla AMOLED de 10 pulgadas",
-  "disponible": true,
-  "categoriaId": 1
+  "nombre": "Sensor DHT121",
+  "precio": 3.5,
+  "descripcion": "Sensor de temperatura y humedad",
+  "disponible": false,
+  "fecha_ingreso": "2025-07-15T15:00:00.000Z",
+  "categoria_id": 1
 }
 
 ### Actualizar producto existente
-PUT http://localhost:4000/productos/1
+PUT http://localhost:5000/productos/5
 Content-Type: application/json
 
 {
-  "nombre": "Tablet Samsung Galaxy",
-  "precio": 449.99,
-  "descripcion": "Versión actualizada con 128GB de almacenamiento",
+ "nombre": "Sensor DHT121",
+  "precio": 3.5,
+  "descripcion": "Sensor de temperatura y humedad",
   "disponible": true,
-  "categoriaId": 1
+  "fecha_ingreso": "2025-07-15T15:00:00.000Z",
+  "categoria_id": 2
 }
 
 ### Eliminar producto
-DELETE http://localhost:4000/productos/1
+DELETE http://localhost:5000/productos/2

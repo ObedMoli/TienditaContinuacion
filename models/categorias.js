@@ -16,6 +16,10 @@ export const createCategoria = async (nombre) => {
 };
 
 export const updateCategoria = async (id, nombre) => {
+  if (!nombre || typeof nombre !== 'string') {
+    throw new Error('Nombre inválido o vacío');
+  }
+
   await db.query('UPDATE categorias SET nombre = ? WHERE id = ?', [nombre, id]);
   return { id, nombre };
 };
@@ -27,9 +31,4 @@ export const deleteCategoria = async (id) => {
 export const categoriaHasProductos = async (id) => {
   const [rows] = await db.query('SELECT COUNT(*) AS total FROM productos WHERE categoria_id = ?', [id]);
   return rows[0].total > 0;
-};
-
-export const categoriaExists = async (nombre) => {
-  const [rows] = await db.query('SELECT * FROM categorias WHERE nombre = ?', [nombre]);
-  return rows.length > 0;
 };

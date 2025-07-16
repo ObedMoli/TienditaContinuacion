@@ -15,18 +15,19 @@ export const getDisponibles = async () => {
   return rows;
 };
 
-export const createProducto = async ({ nombre, precio, descripcion, disponible, categoriaId }) => {
+export const createProducto = async ({ nombre, precio, descripcion, disponible, categoria_id }) => {
   const [result] = await db.query(
-    'INSERT INTO productos (nombre, precio, descripcion, disponible, fecha_ingreso,categoria_id) VALUES (?, ?, ?, ?, NOW(), ?)',
-    [nombre, precio, descripcion, disponible, categoriaId]
+    'INSERT INTO productos (nombre, precio, descripcion, disponible, fecha_ingreso, categoria_id) VALUES (?, ?, ?, ?, NOW(), ?)',
+    [nombre, precio, descripcion, disponible, categoria_id]
   );
   return result.insertId;
 };
 
-export const updateProducto = async (id, { nombre, precio, descripcion, disponible, categoriaId }) => {
+
+export const updateProducto = async (id, { nombre, precio, descripcion, disponible, categoria_id }) => {
   await db.query(
     'UPDATE productos SET nombre = ?, precio = ?, descripcion = ?, disponible = ?, categoria_id = ? WHERE id = ?',
-    [nombre, precio, descripcion, disponible, categoriaId, id]
+    [nombre, precio, descripcion, disponible, categoria_id, id]
   );
 };
 

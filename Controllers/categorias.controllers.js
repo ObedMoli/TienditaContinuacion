@@ -4,54 +4,90 @@ import {
   createCategoria,
   updateCategoria,
   deleteCategoria,
-  categoriaHasProductos,
-  categoriaExists
+  categoriaHasProductos
 } from '../models/categorias.js';
+
+import { categoriaSchema } from '../schema/categorias.schema.js';
 import { z } from 'zod';
 
-const nombreSchema = z.string().min(1, 'Nombre es requerido');
+export default class CategoriasControllers {
 
-export const obtenerCategorias = async (req, res) => {
-  const categorias = await getAllCategorias();
-  res.json(categorias);
-};
+  static getAll = async (req, res) => {
+    try {
+      const categorias = await getAllCategorias();
+      res.status(200).json({ status: 'Conexión Exitosa', data: categorias });
+    } catch (error) {
+      res.status(500).json({ status: 'Error', message: 'Error al obtener categorías', error: error.message });
+    }
+  };
 
-export const obtenerCategoria = async (req, res) => {
-  const categoria = await getCategoriaById(req.params.id);
-  if (!categoria) return res.status(404).json({ error: 'Categoría no encontrada' });
-  res.json(categoria);
-};
+  static getById = async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) return res.status(400).json({ status: 'Fallido', message: 'ID inválido' });
 
-export const crearCategoria = async (req, res) => {
-  try {
-    const nombre = nombreSchema.parse(req.body.nombre);
-    const existe = await categoriaExists(nombre);
-    if (existe) return res.status(400).json({ error: 'La categoría ya existe' });
+      const categoria = await getCategoriaById(id);
+      if (!categoria) return res.status(404).json({ status: 'Fallido', message: 'Categoría no encontrada' });
 
-    const nuevaCategoria = await createCategoria(nombre);
-    res.status(201).json(nuevaCategoria);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
-};
+      res.status(200).json({ status: 'Conexión Exitosa', data: categoria });
+    } catch (error) {
+      res.status(500).json({ status: 'Error', message: 'Error al obtener categoría', error: error.message });
+    }
+  };
 
-export const editarCategoria = async (req, res) => {
-  try {
-    const nombre = nombreSchema.parse(req.body.nombre);
-    const categoria = await getCategoriaById(req.params.id);
-    if (!categoria) return res.status(404).json({ error: 'Categoría no encontrada' });
+  static crear = async (req, res) => {
+    try {
+      const { nombre } = categoriaSchema.parse(req.body);
+      const nuevaCategoria = await createCategoria(nombre);
+      res.status(201).json({ status: 'Conexión Exitosa', data: nuevaCategoria });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ status: 'Fallido', errores: error.errors });
+      }
+      res.status(500).json({ status: 'Error', message: 'Error al crear categoría', error: error.message });
+    }
+  };
 
-    const actualizada = await updateCategoria(req.params.id, nombre);
-    res.json(actualizada);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
-};
+  static actualizar = async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) return res.status(400).json({ status: 'Fallido', message: 'ID inválido' });
 
-export const eliminarCategoria = async (req, res) => {
-  const tieneProductos = await categoriaHasProductos(req.params.id);
-  if (tieneProductos) return res.status(400).json({ error: 'No se puede eliminar, categoría con productos asignados' });
+      const existente = await getCategoriaById(id);
+      if (!existente) return res.status(404).json({ status: 'Fallido', message: 'Categoría no encontrada' });
 
-  await deleteCategoria(req.params.id);
-  res.json({ mensaje: 'Categoría eliminada' });
-};
+      const { nombre } = categoriaSchema.parse(req.body);
+      const actualizada = await updateCategoria(id, nombre);
+
+      res.status(200).json({ status: 'Actualizado correctamente', data: actualizada });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ status: 'Fallido', errores: error.errors });
+      }
+      res.status(500).json({ status: 'Error', message: 'Error al actualizar categoría', error: error.message });
+    }
+  };
+
+  static eliminar = async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) return res.status(400).json({ status: 'Fallido', message: 'ID inválido' });
+
+      const categoria = await getCategoriaById(id);
+      if (!categoria) return res.status(404).json({ status: 'Fallido', message: 'Categoría no encontrada' });
+
+      const tieneProductos = await categoriaHasProductos(id);
+      if (tieneProductos) {
+        return res.status(400).json({
+          status: 'Fallido',
+          message: 'No se puede eliminar la categoría porque tiene productos asignados'
+        });
+      }
+
+      await deleteCategoria(id);
+      res.status(200).json({ status: 'Eliminado correctamente', data: categoria });
+    } catch (error) {
+      res.status(500).json({ status: 'Error', message: 'Error al eliminar categoría', error: error.message });
+    }
+  };
+}
